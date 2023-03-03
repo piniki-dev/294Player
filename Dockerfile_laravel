@@ -1,0 +1,34 @@
+FROM php:latest
+
+ENV PROJECT_PATH=/usr/src/app/294player-backend
+# ENV PROJECT_PATH=/usr/src/app
+# ENV PROJECT_NAME=294player-backend
+
+# コンテナ内で作業するディレクトリの指定
+WORKDIR ${PROJECT_PATH}
+
+# composerのインストール
+RUN docker-php-ext-install pdo_mysql && \
+    php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
+    php -r "if (hash_file('sha384', 'composer-setup.php') === '906a84df04cea2aa72f40b5f787e49f22d4c2f19492ac310e8cba5b96ac8b64115ac402c8cd292b8a03482574915d1a8') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" && \
+    php composer-setup.php && \
+    php -r "unlink('composer-setup.php');" && \
+    mv composer.phar /usr/local/bin/composer && \
+    apt-get update && apt-get install zip unzip
+#    composer create-project laravel/laravel 294player-backend --prefer-dist && \
+#    cd 294player-backend && composer require tcg/voyager && \
+#    php artisan voyager:install
+
+# ホストのLaravel関係のsrcをコンテナへコピー
+COPY src/laravel ${PROJECT_PATH}
+
+# 公開するport番号
+EXPOSE 8000
+
+# コンテナ起動時に実行するコマンド
+# CMD [ "bash", "-c", "php artisan serve --host 0.0.0.0" ]
+
+# ログインメールアドレス
+# noise.joker711@gmail.com
+# パスワード
+# password

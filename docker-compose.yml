@@ -1,0 +1,59 @@
+version: '3.9'
+services:
+  react:
+    build:
+      context: .
+      dockerfile: "Dockerfile_react"
+    tty: true
+    volumes:
+      - type: bind
+        source: ./src/react
+        target: /usr/src/app/294player 
+    ports:
+      - "80:80"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    depends_on:
+      - laravel
+#    command: bash -c "cd 294player && npm start"
+  laravel:
+    build:
+      context: .
+      dockerfile: "Dockerfile_laravel"
+    tty: true
+    volumes:
+      - type: bind
+        source: ./src/laravel
+        target: /usr/src/app/294player-backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+  db:
+    build:
+      context: .
+      dockerfile: "Dockerfile_mysql"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test_db
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: pass
+      TZ: "Asia/Tokyo"
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - type: bind
+        source: ./src/mysql
+        target: /usr/src
+  python:
+    build:
+      context: .
+      dockerfile: Dockerfile_python
+    tty: true
+    volumes:
+      - type: bind
+        source: ./src/python
+        target: /usr/src
+volumes:
+  mysql_data:

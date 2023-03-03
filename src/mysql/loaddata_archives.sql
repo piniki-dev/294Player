@@ -1,0 +1,1 @@
+LOAD DATA LOCAL INFILE 'TsukushiAria_archives.csv' INTO TABLE test_db.archives FIELDS TERMINATED BY ',' ENCLOSED BY '"';

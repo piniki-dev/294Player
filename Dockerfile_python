@@ -1,0 +1,8 @@
+FROM python:latest
+
+ENV PROJECT_PATH=/usr/src
+WORKDIR ${PROJECT_PATH}
+
+RUN pip install --upgrade google-api-python-client && \
+    pip install pandas && \
+    pip install isodate

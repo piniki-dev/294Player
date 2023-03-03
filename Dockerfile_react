@@ -1,0 +1,26 @@
+# ベースイメージの作成
+FROM node:latest
+
+ENV PROJECT_PATH=/usr/src/app/294player
+# ENV PROJECT_PATH=/usr/src/app
+# ENV PROJECT_NAME=294player
+
+# コンテナ内で作業するディレクトリの指定
+WORKDIR ${PROJECT_PATH}
+
+# ホストのReact関係のsrcをコンテナへコピー
+COPY src/react ${PROJECT_PATH}
+
+# create-react-appのインストール & React.jsプロジェクトの作成
+#RUN npm install -g create-react-app && create-react-app ${PROJECT_NAME}
+#RUN npm install -g react-youtube && react-smooth-dnd
+
+# ポート設定のための環境ファイル作成
+#    echo "PORT=80" > ./${PROJECT_NAME}/.env
+
+# 公開するport番号
+EXPOSE 80
+
+# コンテナ起動時に実行するコマンド
+# CMD [ "bash", "-c", "npm start" ]
+# CMD [ "bash", "-c", "cd ${PROJECT_NAME} && npm start" ]

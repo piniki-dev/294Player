@@ -1,0 +1,11 @@
+FROM mysql:latest
+
+# OSのlocaleを日本語化する
+RUN apt-get update && apt-get -y install locales-all
+
+ENV LANG ja_JP.UTF-8
+ENV LANGUAGE ja_JP:ja
+ENV LC_ALL ja_JP.UTF-8
+
+# mysqlの文字コードをutf8に設定する
+COPY ./src/my.cnf /etc/mysql/conf.d/my.cnf
